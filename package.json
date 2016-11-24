@@ -1,0 +1,10 @@
+{
+  "name": "gestoraula",
+  "main": "index.html",
+  "version": "1.0",
+  "chromium-args": "--enable-logging=stderr",
+  "window": {
+    "title": "Gestor de aula",
+    "toolbar": true
+  }
+}
