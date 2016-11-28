@@ -3,43 +3,9 @@
   <head>
   </head>
   <body style="overflow:hidden">
-    <iframe  src="http://localhost:3000"  style="width: 100%; height: 100%; display: inline-block; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></iframe >
+	
   </body>
-  <script>
-  	/*
-  	var gui = require('nw.gui');
-  	var your_menu = new gui.Menu({ type: 'menubar' });
-
-  	var submenu = new nw.Menu();
-	submenu.append(new nw.MenuItem({ label: 'Item A' }));
-	submenu.append(new nw.MenuItem({ label: 'Item B' }));
-
-	// the menu item appended should have a submenu
-	your_menu.append(new nw.MenuItem({
-	  label: 'First Menu',
-	  submenu: submenu
-	}));
-
-  	gui.Window.get().menu = your_menu;
-
-  	*/
-  	var win = nw.Window.get();
-  	win.showDevTools();
-  	win.maximize();
-
-  	//var shell = require("shelljs");
-	//var output = shell.exec("dir",{silent:true,async:false}).output;
-	//console.log(output);
-
-	var exec = require('child_process').exec, child;
-
-	child = exec('arp -a',
-		function (error, stdout, stderr) {
-		    console.log('stdout: ' + stdout);
-		    console.log('stderr: ' + stderr);
-		    if (error !== null) {
-		         console.log('exec error: ' + error);
-		    }
-	});
-  </script>
+	<script src="js/jquery.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+	<script src="js/index.js"></script>
 </html>
