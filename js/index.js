@@ -52,7 +52,7 @@
 	}
 
 	function ipsExtract(res) {
-	    var r = /\b(192)\.(168)\.\d{1,3}\.\d{1,3}\b/; 
+	    var r = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/; 
 		var t;
 
 		if(res.match(r)){
