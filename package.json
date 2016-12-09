@@ -4,6 +4,7 @@
   "version": "1.0",
   "window": {
     "title": "Gestor de aula",
+    "icon": "cl_icon.png",
     "toolbar": true
   }
 }
