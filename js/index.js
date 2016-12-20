@@ -8,7 +8,7 @@
   	$.cookie.json = true;
 	var servIpCookie = $.cookie(SERVER_IP_COOKIE);
 
-  	win.showDevTools();
+  	//win.showDevTools();
   	win.maximize();
 
 	$body = $('body');

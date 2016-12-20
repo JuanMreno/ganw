@@ -1,9 +1,9 @@
 {
-  "name": "gestoraula",
+  "name": "GestorAulaCloudLabs",
   "main": "index.html",
   "version": "1.0",
   "window": {
-    "title": "Gestor de aula",
+    "title": "Gestor de aula CloudLabs",
     "icon": "cl_icon.png",
     "toolbar": true
   }
