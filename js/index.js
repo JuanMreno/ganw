@@ -12,12 +12,18 @@
   	win.maximize();
 
 	$body = $('body');
-	$iFrame = $('<iframe  style="width: 100%; height: 100%; display: inline-block; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></iframe >')
-	
+	$dialog = $('#dialog');
+	$ipServCont = $('#ipServerCont');
+	$ipServCont.hide();
 
-	if(servIpCookie !== undefined){
-		$iFrame.attr('src', servIpCookie.url);
-		$body.append($iFrame);
+	$iFrame = $('<iframe  style="width: 100%; height: 100%; display: inline-block; position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></iframe >')
+
+	console.log(localStorage.ipServer);
+	if(localStorage.ipServer !== undefined){
+		findServerOnce(localStorage.ipServer,false);
+		
+		//$iFrame.attr('src', servIpCookie.url);
+		//$body.append($iFrame);
 	}
 	else{
 		findServer();
@@ -25,8 +31,7 @@
 	//$body.append($iFrame);
 
 	function findServer() {
-		$dialog = $('<dialog open>Buscando el servidor...</dialog>');
-		$body.append($dialog);
+		lookingForServDialog();
 
 		var exec = require('child_process').exec, child;
 
@@ -46,8 +51,45 @@
 			    }
 			    else{
 				    console.log("Servidor no encontrado.");
-				    $dialog.text("Servidor no encontrado.");
+				    servNotFoundDialog();
 			    }
+		});
+	}
+
+	function findServerOnce(ip,loader) {
+		if(loader)
+			lookingForServDialog();
+
+		$.ajax({
+			url: "http://" + ip + VAL_SERV,
+			data:{},
+			timeout: 5000
+		})
+		.done(function( data ) {
+			
+			var res = $.parseJSON(data);
+
+			if(res.status == "true"){
+				console.log("Servidor encontrado: " + ip);
+				$.cookie(SERVER_IP_COOKIE,{url:"http://" + ip + ":3000/"});
+
+				localStorage.ipServer = ip;
+				$iFrame.attr('src', "http://" + ip + ":3000/");
+				$body.append($iFrame);
+			}
+			else{
+				console.log("Servidor no encontrado.");
+		    	servNotFoundDialog();
+			}
+			//alert("Nombre o Usuario inválido, intenta de nuevo.")
+			//clearInterval(loadIntervaId);
+			//$.cookie(SESSION_COOKIE, {id:"1",name:"Oscar Moreno",rol:"pro-rol",rolName:"Profesor"});
+			//goToMain();
+		})
+		.error(function(e) {
+			console.log("Error ajax.");
+			console.log("Servidor no encontrado.");
+		    servNotFoundDialog();
 		});
 	}
 
@@ -67,7 +109,7 @@
 		}
 		else{
 			console.log("Servidor no encontrado.");
-		    $dialog.text("Servidor no encontrado.");
+		    servNotFoundDialog();
 		}
 	}
 
@@ -84,6 +126,8 @@
 			if(res.status == "true"){
 				console.log("Servidor encontrado: " + ip);
 				$.cookie(SERVER_IP_COOKIE,{url:"http://" + ip + ":3000/"});
+
+				localStorage.ipServer = ip;
 				$iFrame.attr('src', "http://" + ip + ":3000/");
 				$body.append($iFrame);
 			}
@@ -109,7 +153,32 @@
 		}
 		else{
 			console.log("Servidor no encontrado.");
-		    $dialog.text("Servidor no encontrado.");
+		    servNotFoundDialog();
 		}
+	}
+
+	function lookingForServDialog() {
+		$ipServCont.hide();
+		$dialog.find('#dialogMns').text('Buscando el servidor...');
+		$dialog.prop('open', true);
+	}
+
+	function servNotFoundDialog() {
+		$dialog.find('#dialogMns').text('Servidor no encontrado.');
+		$dialog.prop('open', true);
+
+		$ipServCont.show();
+		$('#ipServer').val('');
+
+		$('#ipServerSubmit').off('click').on('click', function(event) {
+			event.preventDefault();
+			
+			$input = $('#ipServer');
+			console.log($input.val());
+
+			if($input.val() != '')
+				findServerOnce($input.val(),true);
+		});
+
 	}
 })(jQuery);
